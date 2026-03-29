@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="860" viewBox="0 0 1440 860">
+  <rect width="1440" height="860" fill="#f4f8ff"/>
+  <text x="60" y="70" font-family="Segoe UI, Arial, sans-serif" font-size="30" font-weight="700" fill="#20334e">DaLE Inventario - Flujo de venta</text>
+  <text x="60" y="105" font-family="Segoe UI, Arial, sans-serif" font-size="16" fill="#526a89">Secuencia principal para registrar una venta</text>
+
+  <g font-family="Segoe UI, Arial, sans-serif" fill="#20334e" font-weight="700" font-size="18">
+    <text x="130" y="160">Usuario</text>
+    <text x="360" y="160">Web / API</text>
+    <text x="605" y="160">SaleService</text>
+    <text x="870" y="160">Repositorios</text>
+    <text x="1145" y="160">SQL Server</text>
+  </g>
+
+  <g stroke="#9db8e9" stroke-width="2" stroke-dasharray="8 8">
+    <line x1="150" y1="190" x2="150" y2="780"/>
+    <line x1="400" y1="190" x2="400" y2="780"/>
+    <line x1="650" y1="190" x2="650" y2="780"/>
+    <line x1="930" y1="190" x2="930" y2="780"/>
+    <line x1="1190" y1="190" x2="1190" y2="780"/>
+  </g>
+
+  <g font-family="Segoe UI, Arial, sans-serif" font-size="14" fill="#20334e">
+    <line x1="150" y1="230" x2="400" y2="230" stroke="#2f6bff" stroke-width="3"/>
+    <polygon points="400,230 385,222 385,238" fill="#2f6bff"/>
+    <text x="205" y="220">Env&#237;a venta con productos y cantidades</text>
+
+    <line x1="400" y1="300" x2="650" y2="300" stroke="#2f6bff" stroke-width="3"/>
+    <polygon points="650,300 635,292 635,308" fill="#2f6bff"/>
+    <text x="485" y="290">Valida y procesa solicitud</text>
+
+    <line x1="650" y1="370" x2="930" y2="370" stroke="#2f6bff" stroke-width="3"/>
+    <polygon points="930,370 915,362 915,378" fill="#2f6bff"/>
+    <text x="735" y="360">Consulta productos y stock</text>
+
+    <line x1="930" y1="440" x2="1190" y2="440" stroke="#2f6bff" stroke-width="3"/>
+    <polygon points="1190,440 1175,432 1175,448" fill="#2f6bff"/>
+    <text x="1000" y="430">Lee productos y existencias</text>
+
+    <line x1="1190" y1="510" x2="930" y2="510" stroke="#34a853" stroke-width="3"/>
+    <polygon points="930,510 945,502 945,518" fill="#34a853"/>
+    <text x="1000" y="500">Devuelve datos</text>
+
+    <line x1="930" y1="580" x2="650" y2="580" stroke="#34a853" stroke-width="3"/>
+    <polygon points="650,580 665,572 665,588" fill="#34a853"/>
+    <text x="725" y="570">Productos encontrados</text>
+
+    <line x1="650" y1="650" x2="930" y2="650" stroke="#2f6bff" stroke-width="3"/>
+    <polygon points="930,650 915,642 915,658" fill="#2f6bff"/>
+    <text x="720" y="640">Guarda venta y descuenta stock</text>
+
+    <line x1="930" y1="720" x2="1190" y2="720" stroke="#2f6bff" stroke-width="3"/>
+    <polygon points="1190,720 1175,712 1175,728" fill="#2f6bff"/>
+    <text x="995" y="710">Persiste Sale y SaleItems</text>
+
+    <line x1="1190" y1="770" x2="400" y2="770" stroke="#34a853" stroke-width="3"/>
+    <polygon points="400,770 415,762 415,778" fill="#34a853"/>
+    <text x="705" y="760">Confirmaci&#243;n y respuesta exitosa</text>
+  </g>
+
+  <rect x="565" y="610" rx="12" ry="12" width="170" height="50" fill="#eef4ff" stroke="#7aa2ff" stroke-width="2"/>
+  <text x="650" y="641" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="14" fill="#20334e">Calcula total y ajusta stock</text>
+</svg>

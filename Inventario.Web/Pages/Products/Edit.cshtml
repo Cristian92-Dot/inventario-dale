@@ -1,0 +1,113 @@
+@page "{id:guid}"
+@model Inventario.Web.Pages.Products.EditModel
+@{
+    ViewData["Title"] = "Editar producto";
+}
+
+<section class="page-title-block">
+    <div>
+        <span class="eyebrow">Catálogo</span>
+        <h2 class="h3 mb-2">Actualizar producto</h2>
+        <p class="page-subtitle mb-0">Modifica la información comercial y de inventario del producto seleccionado.</p>
+    </div>
+</section>
+
+<section class="section-card">
+    <form method="post" enctype="multipart/form-data" class="row g-3">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="col-12">
+            <label asp-for="Input.Name" class="form-label"></label>
+            <input asp-for="Input.Name" class="form-control" />
+            <span asp-validation-for="Input.Name" class="text-danger"></span>
+        </div>
+        <div class="col-md-6">
+            <label asp-for="Input.Category" class="form-label">Categoría</label>
+            <select asp-for="Input.Category" asp-items="Model.CategoryOptions" class="form-select"></select>
+            <div class="form-text">Las categorías inactivas se muestran solo para mantener integridad histórica.</div>
+            <span asp-validation-for="Input.Category" class="text-danger"></span>
+        </div>
+        <div class="col-md-6">
+            <label asp-for="Input.Brand" class="form-label">Marca</label>
+            <input asp-for="Input.Brand" class="form-control" />
+            <span asp-validation-for="Input.Brand" class="text-danger"></span>
+        </div>
+        <div class="col-12">
+            <label asp-for="Input.ShortDescription" class="form-label">Descripción corta</label>
+            <textarea asp-for="Input.ShortDescription" class="form-control" rows="2"></textarea>
+            <span asp-validation-for="Input.ShortDescription" class="text-danger"></span>
+        </div>
+        <div class="col-12">
+            <label asp-for="Input.Description" class="form-label">Descripción larga</label>
+            <textarea asp-for="Input.Description" class="form-control" rows="5"></textarea>
+            <span asp-validation-for="Input.Description" class="text-danger"></span>
+        </div>
+        <div class="col-12">
+            <label asp-for="ImageFile" class="form-label">Imagen del producto</label>
+            <input asp-for="ImageFile" class="form-control" accept=".jpg,.jpeg,.png,.webp" />
+            <div class="form-text">Si seleccionas una nueva imagen, reemplazará la actual.</div>
+            <span asp-validation-for="ImageFile" class="text-danger"></span>
+        </div>
+        @if (!string.IsNullOrWhiteSpace(Model.Input.ImagePath))
+        {
+            <div class="col-12">
+                <div class="product-image-inline-card">
+                    <img src="@Model.Input.ImagePath" alt="@Model.Input.Name" class="product-image-inline-preview" />
+                    <label class="form-check-label d-flex align-items-center gap-2">
+                        <input asp-for="RemoveCurrentImage" class="form-check-input" />
+                        <span>Quitar imagen actual</span>
+                    </label>
+                </div>
+            </div>
+        }
+        <div class="col-12">
+            <label asp-for="GalleryFiles" class="form-label">Agregar imágenes a la galería</label>
+            <input asp-for="GalleryFiles" class="form-control" accept=".jpg,.jpeg,.png,.webp" multiple />
+            <div class="form-text">Puedes sumar nuevas imágenes secundarias para enriquecer el detalle.</div>
+            <span asp-validation-for="GalleryFiles" class="text-danger"></span>
+        </div>
+        @if (Model.ExistingGalleryImages.Any())
+        {
+            <div class="col-12">
+                <div class="product-gallery-manage-grid">
+                    @foreach (var image in Model.ExistingGalleryImages)
+                    {
+                        <label class="product-gallery-manage-item">
+                            <img src="@image.ImagePath" alt="Imagen de galería" class="product-gallery-manage-preview" />
+                            <span class="product-gallery-sort-field">
+                                <span>Orden de aparición</span>
+                                <input type="number" class="form-control form-control-sm" name="GallerySortOrders[@image.Id]" value="@image.SortOrder" min="0" />
+                            </span>
+                            <span class="form-check d-flex align-items-center gap-2 mt-2 mb-0">
+                                <input class="form-check-input" type="checkbox" name="GalleryImageIdsToRemove" value="@image.Id" />
+                                <span class="form-check-label">Quitar esta imagen</span>
+                            </span>
+                        </label>
+                    }
+                </div>
+            </div>
+        }
+        <div class="col-md-4">
+            <label asp-for="Input.Price" class="form-label">Precio</label>
+            <input asp-for="Input.Price" class="form-control" />
+            <span asp-validation-for="Input.Price" class="text-danger"></span>
+        </div>
+        <div class="col-md-4">
+            <label asp-for="Input.Stock" class="form-label">Stock actual</label>
+            <input asp-for="Input.Stock" class="form-control" />
+            <span asp-validation-for="Input.Stock" class="text-danger"></span>
+        </div>
+        <div class="col-md-4">
+            <label asp-for="Input.MinStock" class="form-label">Stock mínimo</label>
+            <input asp-for="Input.MinStock" class="form-control" />
+            <span asp-validation-for="Input.MinStock" class="text-danger"></span>
+        </div>
+        <div class="col-12 d-flex gap-2">
+            <button type="submit" class="btn btn-primary">Guardar cambios</button>
+            <a class="btn btn-outline-secondary" asp-page="/Products/Index">Cancelar</a>
+        </div>
+    </form>
+</section>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

@@ -1,0 +1,48 @@
+@page
+@model Inventario.Web.Pages.Audit.IndexModel
+@{
+    ViewData["Title"] = "Auditoría";
+}
+
+<section class="page-title-block">
+    <div>
+        <span class="eyebrow">Trazabilidad</span>
+        <h2 class="h3 mb-2">Auditoría funcional</h2>
+        <p class="page-subtitle mb-0">Consulta los últimos eventos auditados para dar seguimiento a cambios operativos, autenticación y registro de ventas.</p>
+    </div>
+</section>
+
+<section class="section-card">
+    @if (Model.Logs.Any())
+    {
+        <div class="table-responsive">
+            <table class="table align-middle">
+                <thead>
+                    <tr>
+                        <th>Fecha</th>
+                        <th>Acción</th>
+                        <th>Entidad</th>
+                        <th>Usuario</th>
+                        <th>Correlación</th>
+                    </tr>
+                </thead>
+                <tbody>
+                @foreach (var log in Model.Logs)
+                {
+                    <tr>
+                        <td>@log.CreatedAt.ToLocalTime().ToString("g")</td>
+                        <td><span class="badge badge-ok">@log.ActionType</span></td>
+                        <td>@log.EntityName</td>
+                        <td>@(string.IsNullOrWhiteSpace(log.UserName) ? "Sistema" : log.UserName)</td>
+                        <td><code>@log.CorrelationId</code></td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+        </div>
+    }
+    else
+    {
+        <div class="empty-state">Aún no existen registros de auditoría para mostrar.</div>
+    }
+</section>

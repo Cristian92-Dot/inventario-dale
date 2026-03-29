@@ -1,0 +1,301 @@
+@page "{id:guid}"
+@model Inventario.Web.Pages.Products.DetailsModel
+@{
+    ViewData["Title"] = "Detalle de producto";
+}
+
+<section class="page-title-block">
+    <div>
+        <span class="eyebrow">Catálogo</span>
+        <h2 class="h3 mb-2">Detalle de producto</h2>
+        <p class="page-subtitle mb-0">Consulta la información comercial, el estado del inventario y la vigencia del producto seleccionado.</p>
+    </div>
+</section>
+
+@if (Model.Product is not null)
+{
+    var galleryImages = Model.Product.GalleryImages.Any()
+        ? Model.Product.GalleryImages.Select(x => x.ImagePath).ToArray()
+        : Array.Empty<string>();
+    var heroImage = !string.IsNullOrWhiteSpace(Model.Product.ImagePath)
+        ? Model.Product.ImagePath
+        : galleryImages.FirstOrDefault();
+
+    <section class="product-hero-card mb-4">
+        <div>
+            <div class="product-hero-media product-hero-media--interactive">
+                @if (!string.IsNullOrWhiteSpace(heroImage))
+                {
+                    <button type="button" class="product-lightbox-trigger" data-lightbox-open data-image-src="@heroImage" data-image-alt="@Model.Product.Name">
+                        <img src="@heroImage" alt="@Model.Product.Name" class="product-hero-image" id="productMainImage" />
+                        <span class="product-zoom-hint"><i class="bi bi-zoom-in"></i> Ver detalle</span>
+                    </button>
+                }
+                else
+                {
+                    <div class="product-hero-placeholder">
+                        <i class="bi bi-box-seam"></i>
+                        <span>Sin imagen cargada</span>
+                    </div>
+                }
+            </div>
+
+            @if (!string.IsNullOrWhiteSpace(heroImage) || galleryImages.Any())
+            {
+                <div class="product-gallery-strip mt-3">
+                    @if (!string.IsNullOrWhiteSpace(heroImage))
+                    {
+                        <button type="button" class="product-gallery-thumb-button is-active" data-gallery-thumb data-image-src="@heroImage" data-image-alt="@Model.Product.Name">
+                            <img src="@heroImage" alt="Imagen principal de @Model.Product.Name" class="product-gallery-thumb" />
+                        </button>
+                    }
+
+                    @foreach (var image in galleryImages)
+                    {
+                        <button type="button" class="product-gallery-thumb-button" data-gallery-thumb data-image-src="@image" data-image-alt="Galería de @Model.Product.Name">
+                            <img src="@image" alt="Galería de @Model.Product.Name" class="product-gallery-thumb" />
+                        </button>
+                    }
+                </div>
+            }
+        </div>
+
+        <div class="product-hero-content">
+            <div class="d-flex flex-wrap justify-content-between gap-3 align-items-start">
+                <div>
+                    <span class="eyebrow">Producto destacado</span>
+                    <h3 class="product-hero-title">@Model.Product.Name</h3>
+                    <div class="product-meta-pills mb-3">
+                        <span class="pill-indicator">@Model.Product.Category</span>
+                        <span class="pill-indicator">@Model.Product.Brand</span>
+                    </div>
+                    <p class="page-subtitle mb-0">Vista comercial completa del producto, con foco en disponibilidad, precio y seguimiento operativo.</p>
+                </div>
+                @if (Model.Product.RequiresRestock)
+                {
+                    <span class="badge badge-warning-soft">Requiere reposición</span>
+                }
+                else
+                {
+                    <span class="badge badge-ok">Disponible para operación</span>
+                }
+            </div>
+
+            <div class="product-price-block">
+                <span class="product-price-label">Precio actual</span>
+                <div class="product-price-value">@Model.Product.Price.ToString("C")</div>
+                <span class="muted-copy">Precio unitario vigente en el catálogo.</span>
+            </div>
+
+            <div class="product-feature-grid">
+                <article class="product-feature-card">
+                    <span class="muted-copy d-block">Stock actual</span>
+                    <strong>@Model.Product.Stock unidades</strong>
+                </article>
+                <article class="product-feature-card">
+                    <span class="muted-copy d-block">Stock mínimo</span>
+                    <strong>@Model.Product.MinStock unidades</strong>
+                </article>
+                <article class="product-feature-card">
+                    <span class="muted-copy d-block">Estado</span>
+                    <strong>@(Model.Product.IsActive ? "Activo" : "Inactivo")</strong>
+                </article>
+                <article class="product-feature-card">
+                    <span class="muted-copy d-block">Última actualización</span>
+                    <strong>@((Model.Product.UpdatedAt ?? Model.Product.CreatedAt).ToLocalTime().ToString("g"))</strong>
+                </article>
+            </div>
+
+            @if (!string.IsNullOrWhiteSpace(Model.Product.ShortDescription))
+            {
+                <div class="product-short-description">@Model.Product.ShortDescription</div>
+            }
+
+            <div class="product-highlights">
+                <div class="product-highlight-item"><i class="bi bi-shield-check"></i><span>Catálogo protegido por permisos según rol.</span></div>
+                <div class="product-highlight-item"><i class="bi bi-truck"></i><span>Seguimiento rápido para decisiones de reposición.</span></div>
+                <div class="product-highlight-item"><i class="bi bi-stars"></i><span>Presentación visual lista para operación interna.</span></div>
+            </div>
+
+            <div class="mt-4 d-flex gap-2 flex-wrap">
+                <a class="btn btn-outline-secondary" asp-page="/Products/Index">Volver</a>
+                @if (User.IsInRole("ADMIN"))
+                {
+                    <a class="btn btn-primary" asp-page="/Products/Edit" asp-route-id="@Model.Product.Id">Editar producto</a>
+                }
+            </div>
+        </div>
+    </section>
+
+    <section class="dashboard-grid">
+        <div class="col-span-8 section-card">
+            <span class="eyebrow">Detalle enriquecido</span>
+            <h3 class="h5 mt-2">Qué debes saber de este producto</h3>
+            <div class="product-detail-copy-grid mt-3">
+                <div>
+                    <h4 class="h6">Disponibilidad</h4>
+                    <p class="muted-copy mb-0">@((Model.Product.Stock == 0) ? "Actualmente agotado. Conviene priorizar una compra o reposición inmediata." : Model.Product.RequiresRestock ? "Tiene existencias disponibles, pero ya opera en un nivel de alerta y requiere seguimiento." : "Cuenta con inventario suficiente para responder a la demanda operativa actual.")</p>
+                </div>
+                <div>
+                    <h4 class="h6">Contexto comercial</h4>
+                    <p class="muted-copy mb-0">@(string.IsNullOrWhiteSpace(Model.Product.Description) ? "El precio y el stock se muestran en una ficha central para facilitar revisión rápida, muy al estilo de una vitrina de producto enfocada en toma de decisión." : Model.Product.Description)</p>
+                </div>
+                <div>
+                    <h4 class="h6">Trazabilidad</h4>
+                    <p class="muted-copy mb-0">Cada ajuste del producto queda integrado al flujo de auditoría, exportaciones y reportes del sistema.</p>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="col-span-4 section-card">
+            <span class="eyebrow">Acción rápida</span>
+            <h3 class="h5 mt-2">Estado operacional</h3>
+            <ul class="product-status-list mt-3">
+                <li><span>Inventario</span><strong>@(Model.Product.Stock == 0 ? "Agotado" : Model.Product.RequiresRestock ? "Bajo" : "Estable")</strong></li>
+                <li><span>Disponibilidad</span><strong>@(Model.Product.IsActive ? "Visible" : "Oculto")</strong></li>
+                <li><span>Registro</span><strong>@Model.Product.CreatedAt.ToLocalTime().ToString("d")</strong></li>
+            </ul>
+        </div>
+    </section>
+
+    <section class="dashboard-grid mt-4">
+        <div class="col-span-6 section-card">
+            <span class="eyebrow">Relacionados</span>
+            <h3 class="h5 mt-2">Más productos de @Model.Product.Category</h3>
+            @if (Model.RelatedProducts.Any())
+            {
+                <div class="recommendation-grid mt-3">
+                    @foreach (var recommendation in Model.RelatedProducts)
+                    {
+                        <a class="recommendation-card" asp-page="/Products/Details" asp-route-id="@recommendation.Id">
+                            @if (!string.IsNullOrWhiteSpace(recommendation.ImagePath))
+                            {
+                                <img src="@recommendation.ImagePath" alt="@recommendation.Name" class="recommendation-card-image" />
+                            }
+                            else
+                            {
+                                <div class="recommendation-card-image recommendation-card-image--placeholder"><i class="bi bi-image"></i></div>
+                            }
+                            <div class="recommendation-card-body">
+                                <div class="product-meta-pills">
+                                    <span class="pill-indicator">@recommendation.Category</span>
+                                    <span class="pill-indicator">@recommendation.Brand</span>
+                                </div>
+                                <strong>@recommendation.Name</strong>
+                                <p class="muted-copy mb-0">@(recommendation.ShortDescription ?? "Producto relacionado dentro del mismo universo comercial.")</p>
+                                <span class="recommendation-price">@recommendation.Price.ToString("C")</span>
+                            </div>
+                        </a>
+                    }
+                </div>
+            }
+            else
+            {
+                <div class="empty-state mt-3">No hay más productos activos en esta categoría por ahora.</div>
+            }
+        </div>
+
+        <div class="col-span-6 section-card">
+            <span class="eyebrow">Tendencia</span>
+            <h3 class="h5 mt-2">Más vendidos del catálogo</h3>
+            @if (Model.TopSellingProducts.Any())
+            {
+                <div class="recommendation-grid mt-3">
+                    @foreach (var recommendation in Model.TopSellingProducts)
+                    {
+                        <a class="recommendation-card" asp-page="/Products/Details" asp-route-id="@recommendation.Id">
+                            @if (!string.IsNullOrWhiteSpace(recommendation.ImagePath))
+                            {
+                                <img src="@recommendation.ImagePath" alt="@recommendation.Name" class="recommendation-card-image" />
+                            }
+                            else
+                            {
+                                <div class="recommendation-card-image recommendation-card-image--placeholder"><i class="bi bi-graph-up-arrow"></i></div>
+                            }
+                            <div class="recommendation-card-body">
+                                <strong>@recommendation.Name</strong>
+                                <p class="muted-copy mb-0">@(recommendation.ShortDescription ?? "Producto destacado por su volumen de ventas.")</p>
+                                <div class="recommendation-metrics">
+                                    <span class="recommendation-price">@recommendation.Price.ToString("C")</span>
+                                    <span class="pill-indicator">@((recommendation.SoldQuantity ?? 0).ToString()) ventas</span>
+                                </div>
+                            </div>
+                        </a>
+                    }
+                </div>
+            }
+            else
+            {
+                <div class="empty-state mt-3">Todavía no hay suficientes ventas para sugerir productos destacados.</div>
+            }
+        </div>
+    </section>
+
+    <div class="product-lightbox" id="productLightbox" hidden>
+        <button type="button" class="product-lightbox-close" data-lightbox-close aria-label="Cerrar vista ampliada"><i class="bi bi-x-lg"></i></button>
+        <img src="" alt="Vista ampliada de producto" class="product-lightbox-image" id="productLightboxImage" />
+    </div>
+}
+
+@section Scripts {
+    <script>
+        (() => {
+            const mainImage = document.getElementById('productMainImage');
+            const lightbox = document.getElementById('productLightbox');
+            const lightboxImage = document.getElementById('productLightboxImage');
+            const productName = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.Product?.Name ?? "Producto"));
+
+            document.querySelectorAll('[data-gallery-thumb]').forEach(button => {
+                button.addEventListener('click', () => {
+                    const imageSrc = button.dataset.imageSrc;
+                    const imageAlt = button.dataset.imageAlt || productName;
+                    if (!mainImage || !imageSrc) {
+                        return;
+                    }
+
+                    mainImage.src = imageSrc;
+                    mainImage.alt = imageAlt;
+
+                    document.querySelectorAll('[data-gallery-thumb]').forEach(item => item.classList.remove('is-active'));
+                    button.classList.add('is-active');
+                });
+            });
+
+            document.querySelectorAll('[data-lightbox-open]').forEach(button => {
+                button.addEventListener('click', () => {
+                    const image = mainImage?.src || button.dataset.imageSrc;
+                    if (!lightbox || !lightboxImage || !image) {
+                        return;
+                    }
+
+                    lightboxImage.src = image;
+                    lightbox.hidden = false;
+                    document.body.classList.add('lightbox-open');
+                });
+            });
+
+            document.querySelectorAll('[data-lightbox-close]').forEach(button => {
+                button.addEventListener('click', () => {
+                    if (!lightbox || !lightboxImage) {
+                        return;
+                    }
+
+                    lightbox.hidden = true;
+                    lightboxImage.src = '';
+                    document.body.classList.remove('lightbox-open');
+                });
+            });
+
+            lightbox?.addEventListener('click', event => {
+                if (event.target === lightbox) {
+                    lightbox.hidden = true;
+                    if (lightboxImage) {
+                        lightboxImage.src = '';
+                    }
+                    document.body.classList.remove('lightbox-open');
+                }
+            });
+        })();
+    </script>
+}

@@ -1,0 +1,109 @@
+@page
+@model Inventario.Web.Pages.Reports.PurchaseRequestModel
+@{
+    ViewData["Title"] = "Solicitud de compras";
+}
+
+<section class="page-title-block">
+    <div>
+        <span class="eyebrow">Reportes</span>
+        <h2 class="h3 mb-2">Preparar solicitud de compras</h2>
+        <p class="page-subtitle mb-0">Ajusta la cantidad que deseas comprar para cada producto crítico antes de generar el PDF final.</p>
+    </div>
+    <div class="toolbar-actions">
+        <a class="btn btn-outline-secondary" asp-page="/Reports/LowStock">Volver al stock bajo</a>
+    </div>
+</section>
+
+<section class="section-card">
+    <form method="post" asp-page-handler="GeneratePdf">
+        <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+        <div class="purchase-request-meta-grid mb-4">
+            <div class="metric-card">
+                <span class="metric-label">Empresa</span>
+                <strong>@Model.Input.Empresa</strong>
+            </div>
+            <div class="metric-card">
+                <span class="metric-label">Área</span>
+                <strong>@Model.Input.AreaSolicitante</strong>
+            </div>
+            <div class="metric-card">
+                <span class="metric-label">Responsable</span>
+                <strong>@Model.Input.Responsable</strong>
+            </div>
+            <div class="metric-card">
+                <span class="metric-label">Correlativo</span>
+                <strong>@Model.Input.Correlativo</strong>
+            </div>
+        </div>
+
+        <input asp-for="Input.Empresa" type="hidden" />
+        <input asp-for="Input.AreaSolicitante" type="hidden" />
+        <input asp-for="Input.Responsable" type="hidden" />
+        <input asp-for="Input.FechaEmision" type="hidden" />
+        <input asp-for="Input.Correlativo" type="hidden" />
+
+        <div class="table-responsive">
+            <table class="table align-middle">
+                <thead>
+                    <tr>
+                        <th>Producto</th>
+                        <th>Stock actual</th>
+                        <th>Stock mínimo</th>
+                        <th>Estado</th>
+                        <th>Cantidad a comprar</th>
+                    </tr>
+                </thead>
+                <tbody>
+                @for (var i = 0; i < Model.Input.Items.Count; i++)
+                {
+                    <tr>
+                        <td>
+                            <div class="product-listing-cell">
+                                @if (!string.IsNullOrWhiteSpace(Model.Input.Items[i].ImagenPath))
+                                {
+                                    <img src="@Model.Input.Items[i].ImagenPath" alt="@Model.Input.Items[i].Nombre" class="product-listing-thumb" />
+                                }
+                                else
+                                {
+                                    <div class="product-listing-thumb product-listing-thumb--placeholder"><i class="bi bi-image"></i></div>
+                                }
+                                <div>
+                                    <strong>@Model.Input.Items[i].Nombre</strong>
+                                    <div class="muted-copy">Compra sugerida editable antes de exportar.</div>
+                                </div>
+                            </div>
+                            <input asp-for="Input.Items[i].Nombre" type="hidden" />
+                            <input asp-for="Input.Items[i].ImagenPath" type="hidden" />
+                            <input asp-for="Input.Items[i].Estado" type="hidden" />
+                        </td>
+                        <td>
+                            @Model.Input.Items[i].StockActual
+                            <input asp-for="Input.Items[i].StockActual" type="hidden" />
+                        </td>
+                        <td>
+                            @Model.Input.Items[i].StockMinimo
+                            <input asp-for="Input.Items[i].StockMinimo" type="hidden" />
+                        </td>
+                        <td><span class="badge badge-warning-soft">@Model.Input.Items[i].Estado</span></td>
+                        <td>
+                            <input asp-for="Input.Items[i].CantidadAComprar" class="form-control form-control-sm purchase-quantity-input" min="0" />
+                            <span asp-validation-for="Input.Items[i].CantidadAComprar" class="text-danger"></span>
+                        </td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+        </div>
+
+        <div class="d-flex gap-2 justify-content-end mt-4 flex-wrap">
+            <a class="btn btn-outline-secondary" asp-page="/Reports/LowStock">Cancelar</a>
+            <button type="submit" class="btn btn-primary"><i class="bi bi-file-earmark-pdf"></i> Generar PDF</button>
+        </div>
+    </form>
+</section>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

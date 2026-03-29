@@ -1,0 +1,107 @@
+@using Inventario.Infrastructure.Identity
+@using Microsoft.AspNetCore.Identity
+@inject UserManager<ApplicationUser> UserManager
+@{
+    var currentPath = ViewContext.HttpContext.Request.Path.Value ?? string.Empty;
+    string NavClass(string pathPrefix) => currentPath.StartsWith(pathPrefix, StringComparison.OrdinalIgnoreCase) ? "nav-link active" : "nav-link";
+    var successMessage = TempData["SuccessMessage"] as string;
+    var errorMessage = TempData["ErrorMessage"] as string;
+    var currentUser = User.Identity?.IsAuthenticated == true ? await UserManager.GetUserAsync(User) : null;
+    var currentDisplayName = !string.IsNullOrWhiteSpace(currentUser?.DisplayName) ? currentUser.DisplayName : User.Identity?.Name;
+}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Inventario</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/Inventario.Web.styles.css" asp-append-version="true" />
+</head>
+<body class="app-body" data-success-message="@successMessage" data-error-message="@errorMessage">
+    <div class="app-shell">
+        <aside class="app-sidebar">
+            <div class="sidebar-branding">
+                <a class="app-brand" asp-page="/Dashboard/Index">
+                    <img src="~/images/logo-inventario2.svg" alt="Inventario Central" class="brand-logo" />
+                    <span class="app-brand-copy">
+                      
+                    </span>
+                </a>
+                <p class="app-tagline">Control de productos, ventas, alertas y trazabilidad operativa.</p>
+            </div>
+
+            <nav class="app-nav">
+                <a class="@NavClass("/Dashboard")" asp-page="/Dashboard/Index"><i class="bi bi-speedometer2"></i><span>Panel principal</span></a>
+                <a class="@NavClass("/Products")" asp-page="/Products/Index"><i class="bi bi-box-seam"></i><span>Productos</span></a>
+                <a class="@NavClass("/Sales")" asp-page="/Sales/Create"><i class="bi bi-cart3"></i><span>Ventas</span></a>
+                <a class="@NavClass("/Reports")" asp-page="/Reports/LowStock"><i class="bi bi-bar-chart-line"></i><span>Reportes</span></a>
+
+                @if (User.IsInRole("ADMIN"))
+                {
+                    <a class="@NavClass("/Categories")" asp-page="/Categories/Index"><i class="bi bi-tags"></i><span>Categorías</span></a>
+                    <a class="@NavClass("/Users")" asp-page="/Users/Index"><i class="bi bi-people"></i><span>Usuarios</span></a>
+                    <a class="@NavClass("/Audit")" asp-page="/Audit/Index"><i class="bi bi-shield-check"></i><span>Auditoría</span></a>
+                }
+            </nav>
+
+            <div class="sidebar-footer">
+                <div class="status-chip">
+                    <span class="status-dot"></span>
+                    <span>Entorno operativo activo</span>
+                </div>
+            </div>
+        </aside>
+
+        <div class="app-content">
+            <header class="topbar">
+                <div>
+                    <p class="eyebrow">Gestión empresarial</p>
+                    <h1 class="topbar-title">@ViewData["Title"]</h1>
+                </div>
+
+                <div class="topbar-actions">
+                    @if (User.Identity?.IsAuthenticated ?? false)
+                    {
+                        <button type="button" class="icon-button" aria-label="Notificaciones"><i class="bi bi-bell"></i></button>
+                        <button type="button" class="icon-button" aria-label="Mensajes"><i class="bi bi-chat-dots"></i></button>
+                        <div class="session-card">
+                            <div class="session-avatar-wrap">
+                                @if (!string.IsNullOrWhiteSpace(currentUser?.AvatarPath))
+                                {
+                                    <img src="@currentUser.AvatarPath" alt="@currentDisplayName" class="session-avatar" />
+                                }
+                                else
+                                {
+                                    <div class="session-avatar session-avatar--placeholder"><i class="bi bi-person-circle"></i></div>
+                                }
+                            </div>
+                            <div class="session-details">
+                                <span class="session-role">@string.Join(" | ", User.Claims.Where(c => c.Type == System.Security.Claims.ClaimTypes.Role).Select(c => c.Value))</span>
+                                <strong>@currentDisplayName</strong>
+                            </div>
+                        </div>
+                        <form method="post" asp-page="/Account/Logout">
+                            <button type="submit" class="btn btn-outline-light">Cerrar sesión</button>
+                        </form>
+                    }
+                </div>
+            </header>
+
+            <main class="app-main">
+                @RenderBody()
+            </main>
+        </div>
+    </div>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="700" viewBox="0 0 1200 700">
+  <rect width="1200" height="700" fill="#f4f8ff"/>
+  <text x="60" y="70" font-family="Segoe UI, Arial, sans-serif" font-size="30" font-weight="700" fill="#20334e">DaLE Inventario - C4 Nivel 1</text>
+  <text x="60" y="105" font-family="Segoe UI, Arial, sans-serif" font-size="16" fill="#526a89">Contexto general del sistema</text>
+
+  <rect x="430" y="180" rx="24" ry="24" width="350" height="220" fill="#ffffff" stroke="#2f6bff" stroke-width="4"/>
+  <text x="605" y="245" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="28" font-weight="700" fill="#20334e">DaLE Inventario</text>
+  <text x="605" y="285" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="16" fill="#526a89">Gesti&#243;n de productos, ventas y stock bajo</text>
+  <text x="605" y="315" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="16" fill="#526a89">usuarios, reportes y trazabilidad</text>
+
+  <rect x="85" y="180" rx="18" ry="18" width="220" height="120" fill="#ffffff" stroke="#7aa2ff" stroke-width="3"/>
+  <text x="195" y="230" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="24" font-weight="700" fill="#20334e">Administrador</text>
+  <text x="195" y="265" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="15" fill="#526a89">Administra operaci&#243;n, usuarios,</text>
+  <text x="195" y="288" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="15" fill="#526a89">reportes y auditor&#237;a</text>
+
+  <rect x="85" y="360" rx="18" ry="18" width="220" height="120" fill="#ffffff" stroke="#7aa2ff" stroke-width="3"/>
+  <text x="195" y="410" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="24" font-weight="700" fill="#20334e">Empleado</text>
+  <text x="195" y="445" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="15" fill="#526a89">Consulta productos y</text>
+  <text x="195" y="468" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="15" fill="#526a89">registra ventas</text>
+
+  <rect x="860" y="180" rx="18" ry="18" width="240" height="120" fill="#ffffff" stroke="#60a5fa" stroke-width="3"/>
+  <text x="980" y="230" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="23" font-weight="700" fill="#20334e">SQL Server</text>
+  <text x="980" y="265" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="15" fill="#526a89">Base de datos de negocio,</text>
+  <text x="980" y="288" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="15" fill="#526a89">seguridad y auditor&#237;a</text>
+
+  <rect x="860" y="360" rx="18" ry="18" width="240" height="120" fill="#ffffff" stroke="#60a5fa" stroke-width="3"/>
+  <text x="980" y="410" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="23" font-weight="700" fill="#20334e">Swagger UI</text>
+  <text x="980" y="445" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="15" fill="#526a89">Pruebas técnicas de la API</text>
+  <text x="980" y="468" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="15" fill="#526a89">y autenticaci&#243;n JWT</text>
+
+  <line x1="305" y1="240" x2="430" y2="240" stroke="#2f6bff" stroke-width="3"/>
+  <polygon points="430,240 415,232 415,248" fill="#2f6bff"/>
+
+  <line x1="305" y1="420" x2="430" y2="330" stroke="#2f6bff" stroke-width="3"/>
+  <polygon points="430,330 414,327 423,340" fill="#2f6bff"/>
+
+  <line x1="780" y1="240" x2="860" y2="240" stroke="#2f6bff" stroke-width="3"/>
+  <polygon points="860,240 845,232 845,248" fill="#2f6bff"/>
+
+  <line x1="780" y1="350" x2="860" y2="420" stroke="#2f6bff" stroke-width="3"/>
+  <polygon points="860,420 844,417 853,405" fill="#2f6bff"/>
+</svg>

@@ -1,0 +1,15 @@
+@page
+@model Inventario.Web.Pages.AccessDeniedModel
+@{
+    ViewData["Title"] = "Acceso denegado";
+}
+
+<section class="section-card text-center py-5">
+    <span class="eyebrow">Seguridad</span>
+    <h2 class="display-6 mt-3">No cuentas con permisos suficientes</h2>
+    <p class="page-subtitle mx-auto mt-3">La operación solicitada requiere privilegios adicionales. Si necesitas acceso, solicita apoyo al administrador del sistema.</p>
+    <div class="d-flex justify-content-center gap-2 mt-4">
+        <a class="btn btn-primary" asp-page="/Dashboard/Index">Volver al panel</a>
+        <a class="btn btn-outline-secondary" asp-page="/Account/Login">Cambiar de usuario</a>
+    </div>
+</section>

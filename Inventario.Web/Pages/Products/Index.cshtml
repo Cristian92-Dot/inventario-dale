@@ -1,0 +1,220 @@
+@page
+@model Inventario.Web.Pages.Products.IndexModel
+@{
+    ViewData["Title"] = "Productos";
+}
+
+<section class="page-title-block">
+    <div>
+        <span class="eyebrow">Catálogo</span>
+        <h2 class="h3 mb-2">Productos</h2>
+        <p class="page-subtitle mb-0">Consulta, filtra y administra el catálogo activo de productos con visibilidad inmediata del estado del inventario.</p>
+    </div>
+    <div class="toolbar-actions">
+        @if (User.IsInRole("ADMIN"))
+        {
+            <a class="btn btn-outline-secondary" asp-page-handler="Export">Descargar catálogo</a>
+            <a class="btn btn-primary" asp-page="/Products/Create">Nuevo producto</a>
+        }
+    </div>
+</section>
+
+<section class="catalog-stat-grid mb-4">
+    <article class="metric-card">
+        <span class="metric-label">Resultados</span>
+        <p class="metric-value">@Model.Products.TotalCount</p>
+        <span class="muted-copy">Productos que cumplen con la búsqueda actual.</span>
+    </article>
+    <article class="metric-card">
+        <span class="metric-label">Disponibles</span>
+        <p class="metric-value">@Model.AvailableCount</p>
+        <span class="muted-copy">En la página actual sin alertas de reposición.</span>
+    </article>
+    <article class="metric-card">
+        <span class="metric-label">Stock Bajo</span>
+        <p class="metric-value">@Model.LowStockCount</p>
+        <span class="muted-copy">Requieren seguimiento cercano.</span>
+    </article>
+    <article class="metric-card">
+        <span class="metric-label">Categorías</span>
+        <p class="metric-value">@Model.VisibleCategoryCount</p>
+        <span class="muted-copy">Universos comerciales visibles en esta vista.</span>
+    </article>
+</section>
+
+<section class="section-card catalog-filter-shell">
+    <div class="catalog-filter-header">
+        <div>
+            <span class="eyebrow">Búsqueda avanzada</span>
+            <h3 class="h5 mt-2 mb-1">Explora el catálogo con filtros inteligentes</h3>
+            <p class="page-subtitle mb-0">Combina categoría, marca, disponibilidad y orden para encontrar productos más rápido.</p>
+        </div>
+        @if (Model.HasActiveFilters())
+        {
+            <a class="btn btn-outline-secondary" asp-page="/Products/Index">Limpiar filtros</a>
+        }
+    </div>
+
+    <form method="get" class="row g-3 align-items-end mb-4">
+        <input type="hidden" asp-for="Query.PageNumber" value="1" />
+        <div class="col-12 col-xl-4">
+            <label class="form-label">Buscar producto</label>
+            <div class="catalog-search-wrap">
+                <i class="bi bi-search"></i>
+                <input asp-for="Query.Search" class="form-control catalog-search-input" placeholder="Nombre, categoría, marca o descripción" />
+            </div>
+        </div>
+        <div class="col-12 col-md-6 col-xl-2">
+            <label class="form-label">Categoría</label>
+            <select asp-for="Query.Category" asp-items="Model.CategoryOptions" class="form-select">
+                <option value="">Todas</option>
+            </select>
+        </div>
+        <div class="col-12 col-md-6 col-xl-2">
+            <label class="form-label">Marca</label>
+            <select asp-for="Query.Brand" asp-items="Model.BrandOptions" class="form-select">
+                <option value="">Todas</option>
+            </select>
+        </div>
+        <div class="col-12 col-md-6 col-xl-2">
+            <label class="form-label">Estado</label>
+            <select asp-for="Query.StockStatus" asp-items="Model.StockStatusOptions" class="form-select"></select>
+        </div>
+        <div class="col-12 col-md-6 col-xl-2">
+            <label class="form-label">Ordenar por</label>
+            <select asp-for="Query.SortBy" asp-items="Model.SortOptions" class="form-select"></select>
+        </div>
+        <div class="col-6 col-md-3 col-xl-2">
+            <label class="form-label">Registros</label>
+            <select asp-for="Query.PageSize" class="form-select">
+                <option value="5">5</option>
+                <option value="10">10</option>
+                <option value="20">20</option>
+                <option value="50">50</option>
+            </select>
+        </div>
+        <div class="col-6 col-md-3 col-xl-2 d-grid">
+            <button type="submit" class="btn btn-primary">Aplicar filtros</button>
+        </div>
+    </form>
+
+    <div class="filter-chip-group">
+        <a class="filter-chip @(string.IsNullOrWhiteSpace(Model.Query.StockStatus) ? "is-active" : string.Empty)" href="@Model.BuildStockStatusUrl(null)">Todos</a>
+        <a class="filter-chip @(Model.Query.StockStatus == "available" ? "is-active" : string.Empty)" href="@Model.BuildStockStatusUrl("available")">Disponible</a>
+        <a class="filter-chip @(Model.Query.StockStatus == "lowstock" ? "is-active" : string.Empty)" href="@Model.BuildStockStatusUrl("lowstock")">Stock bajo</a>
+        <a class="filter-chip @(Model.Query.StockStatus == "outofstock" ? "is-active" : string.Empty)" href="@Model.BuildStockStatusUrl("outofstock")">Agotado</a>
+    </div>
+
+    <div class="result-toolbar mt-4">
+        <div>
+            <strong>Vista actual</strong>
+            <div class="muted-copy">Página @Model.Products.PageNumber de @Model.Products.TotalPages con @Model.Products.Items.Count resultados visibles.</div>
+        </div>
+        <div class="result-toolbar-copy">Búsqueda: @(string.IsNullOrWhiteSpace(Model.Query.Search) ? "sin texto" : Model.Query.Search)</div>
+    </div>
+
+    @if (Model.Products.Items.Any())
+    {
+        <div class="table-responsive">
+            <table class="table align-middle">
+                <thead>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Categoría</th>
+                        <th>Marca</th>
+                        <th>Precio</th>
+                        <th>Stock actual</th>
+                        <th>Stock mínimo</th>
+                        <th>Estado</th>
+                        <th>Última actualización</th>
+                        <th class="text-end">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                @foreach (var product in Model.Products.Items)
+                {
+                    <tr>
+                        <td>
+                            <div class="product-listing-cell">
+                                @if (!string.IsNullOrWhiteSpace(product.ImagePath))
+                                {
+                                    <img src="@product.ImagePath" alt="@product.Name" class="product-listing-thumb" />
+                                }
+                                else
+                                {
+                                    <div class="product-listing-thumb product-listing-thumb--placeholder">
+                                        <i class="bi bi-image"></i>
+                                    </div>
+                                }
+                                <div>
+                                    <strong>@product.Name</strong>
+                                    <div class="muted-copy">@(string.IsNullOrWhiteSpace(product.ShortDescription) ? "Vista rápida del catálogo y stock actual." : product.ShortDescription)</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td>@product.Category</td>
+                        <td>@product.Brand</td>
+                        <td>@product.Price.ToString("C")</td>
+                        <td>@product.Stock</td>
+                        <td>@product.MinStock</td>
+                        <td>
+                            @if (!product.IsActive)
+                            {
+                                <span class="badge badge-critical">Inactivo</span>
+                            }
+                            else if (product.Stock == 0)
+                            {
+                                <span class="badge badge-critical">Agotado</span>
+                            }
+                            else if (product.RequiresRestock)
+                            {
+                                <span class="badge badge-warning-soft">Requiere reposición</span>
+                            }
+                            else
+                            {
+                                <span class="badge badge-ok">Disponible</span>
+                            }
+                        </td>
+                        <td>@((product.UpdatedAt ?? product.CreatedAt).ToLocalTime().ToString("g"))</td>
+                        <td class="text-end">
+                            <div class="table-action-group">
+                                <a class="btn btn-sm btn-outline-secondary" asp-page="/Products/Details" asp-route-id="@product.Id"><i class="bi bi-eye"></i><span>Detalle</span></a>
+                                @if (User.IsInRole("ADMIN"))
+                                {
+                                    <a class="btn btn-sm btn-outline-primary" asp-page="/Products/Edit" asp-route-id="@product.Id"><i class="bi bi-pencil-square"></i><span>Editar</span></a>
+                                    <form method="post" asp-page-handler="Delete" asp-route-id="@product.Id" class="d-inline">
+                                        <button type="submit" class="btn btn-sm btn-outline-danger" data-confirm-message="El producto quedará inactivo y dejará de estar disponible para nuevas ventas." data-confirm-title="Desactivar producto"><i class="bi bi-slash-circle"></i><span>Desactivar</span></button>
+                                    </form>
+                                }
+                            </div>
+                        </td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+        </div>
+
+        <div class="pagination-shell">
+            <span class="muted-copy">Mostrando página @Model.Products.PageNumber de @Model.Products.TotalPages | Total registros: @Model.Products.TotalCount</span>
+            <div class="pagination-links">
+                @for (var i = 1; i <= Model.Products.TotalPages; i++)
+                {
+                    if (i == Model.Products.PageNumber)
+                    {
+                        <span class="active">@i</span>
+                    }
+                    else
+                    {
+                        <a href="@Model.BuildPageUrl(i)">@i</a>
+                    }
+                }
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="empty-state">
+            No se encontraron productos con los filtros seleccionados.
+        </div>
+    }
+</section>

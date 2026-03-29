@@ -1,0 +1,65 @@
+@page
+@model Inventario.Web.Pages.Reports.LowStockModel
+@{
+    ViewData["Title"] = "Reporte de stock bajo";
+}
+
+<section class="page-title-block">
+    <div>
+        <span class="eyebrow">Reportes</span>
+        <h2 class="h3 mb-2">Reporte de stock bajo</h2>
+        <p class="page-subtitle mb-0">Identifica productos con riesgo operativo para priorizar compras, reposición y seguimiento de inventario.</p>
+    </div>
+    <div class="toolbar-actions">
+        <span class="pill-indicator">@Model.Products.Count alertas activas</span>
+        @if (User.IsInRole("ADMIN"))
+        {
+            <a class="btn btn-outline-secondary" asp-page-handler="Export"><i class="bi bi-filetype-csv"></i> Descargar CSV</a>
+            <a class="btn btn-outline-secondary" asp-page="/Reports/PurchaseRequest"><i class="bi bi-file-earmark-pdf"></i> Preparar solicitud de compras</a>
+        }
+    </div>
+</section>
+
+<section class="section-card">
+    @if (Model.Products.Any())
+    {
+        <div class="table-responsive">
+            <table class="table align-middle">
+                <thead>
+                    <tr>
+                        <th>Producto</th>
+                        <th>Stock actual</th>
+                        <th>Stock mínimo</th>
+                        <th>Precio</th>
+                        <th>Estado</th>
+                    </tr>
+                </thead>
+                <tbody>
+                @foreach (var product in Model.Products)
+                {
+                    <tr>
+                        <td><strong>@product.Name</strong></td>
+                        <td>@product.Stock</td>
+                        <td>@product.MinStock</td>
+                        <td>@product.Price.ToString("C")</td>
+                        <td>
+                            @if (product.Stock == 0)
+                            {
+                                <span class="badge badge-critical">Agotado</span>
+                            }
+                            else
+                            {
+                                <span class="badge badge-warning-soft">Requiere reposición</span>
+                            }
+                        </td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+        </div>
+    }
+    else
+    {
+        <div class="empty-state">No se detectaron productos en nivel de stock bajo.</div>
+    }
+</section>

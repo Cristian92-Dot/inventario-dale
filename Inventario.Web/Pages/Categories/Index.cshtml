@@ -1,0 +1,86 @@
+@page
+@model Inventario.Web.Pages.Categories.IndexModel
+@{
+    ViewData["Title"] = "Categorías";
+}
+
+<section class="page-title-block">
+    <div>
+        <span class="eyebrow">Catálogo maestro</span>
+        <h2 class="h3 mb-2">Categorías</h2>
+        <p class="page-subtitle mb-0">Administra las categorías disponibles para el catálogo de productos y controla cuáles pueden utilizarse en nuevas altas.</p>
+    </div>
+</section>
+
+<section class="dashboard-grid">
+    <div class="col-span-5 section-card">
+        <span class="eyebrow">Nueva categoría</span>
+        <h3 class="h5 mt-2">Registrar categoría</h3>
+        <form method="post" asp-page-handler="Create" class="row g-3 mt-1">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="col-12">
+                <label asp-for="Input.Name" class="form-label">Nombre</label>
+                <input asp-for="Input.Name" class="form-control" placeholder="Ej. Accesorios premium" />
+                <span asp-validation-for="Input.Name" class="text-danger"></span>
+            </div>
+            <div class="col-12">
+                <label asp-for="Input.Description" class="form-label">Descripción</label>
+                <textarea asp-for="Input.Description" class="form-control" rows="4" placeholder="Describe el uso comercial de la categoría"></textarea>
+                <span asp-validation-for="Input.Description" class="text-danger"></span>
+            </div>
+            <div class="col-12 d-grid">
+                <button type="submit" class="btn btn-primary">Guardar categoría</button>
+            </div>
+        </form>
+    </div>
+
+    <div class="col-span-7 section-card">
+        <span class="eyebrow">Listado maestro</span>
+        <h3 class="h5 mt-2">Categorías disponibles</h3>
+
+        @if (Model.Categories.Any())
+        {
+            <div class="table-responsive mt-3">
+                <table class="table align-middle">
+                    <thead>
+                        <tr>
+                            <th>Orden</th>
+                            <th>Nombre</th>
+                            <th>Descripción</th>
+                            <th>Estado</th>
+                            <th class="text-end">Acción</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    @foreach (var category in Model.Categories)
+                    {
+                        <tr>
+                            <td>@(category.SortOrder + 1)</td>
+                            <td><strong>@category.Name</strong></td>
+                            <td>@(string.IsNullOrWhiteSpace(category.Description) ? "Sin descripción" : category.Description)</td>
+                            <td>
+                                <span class="badge @(category.IsActive ? "badge-ok" : "badge-critical")">@(category.IsActive ? "Activa" : "Inactiva")</span>
+                            </td>
+                            <td class="text-end">
+                                <form method="post" asp-page-handler="ToggleStatus" asp-route-id="@category.Id" class="d-inline">
+                                    <button type="submit" class="btn btn-sm btn-outline-secondary" data-confirm-title="Actualizar categoría" data-confirm-message="Se modificará la disponibilidad de esta categoría en el catálogo maestro.">
+                                        @(category.IsActive ? "Desactivar" : "Activar")
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                    </tbody>
+                </table>
+            </div>
+        }
+        else
+        {
+            <div class="empty-state mt-3">No existen categorías registradas todavía.</div>
+        }
+    </div>
+</section>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="760" viewBox="0 0 1280 760">
+  <rect width="1280" height="760" fill="#f4f8ff"/>
+  <text x="60" y="70" font-family="Segoe UI, Arial, sans-serif" font-size="30" font-weight="700" fill="#20334e">DaLE Inventario - Infraestructura</text>
+  <text x="60" y="105" font-family="Segoe UI, Arial, sans-serif" font-size="16" fill="#526a89">Persistencia, seguridad y datos semilla de la soluci&#243;n</text>
+
+  <rect x="90" y="300" rx="18" ry="18" width="230" height="120" fill="#ffffff" stroke="#7aa2ff" stroke-width="3"/>
+  <text x="205" y="350" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="24" font-weight="700" fill="#20334e">Application</text>
+  <text x="205" y="385" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="15" fill="#526a89">Consume repositorios e</text>
+  <text x="205" y="408" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="15" fill="#526a89">implementaciones concretas</text>
+
+  <rect x="380" y="140" rx="24" ry="24" width="520" height="470" fill="#ffffff" stroke="#2f6bff" stroke-width="4"/>
+  <text x="640" y="200" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="28" font-weight="700" fill="#20334e">Inventario.Infrastructure</text>
+  <text x="640" y="235" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="16" fill="#526a89">Implementaci&#243;n t&#233;cnica de acceso a datos y seguridad</text>
+
+  <rect x="445" y="275" rx="16" ry="16" width="180" height="105" fill="#eef4ff" stroke="#7aa2ff" stroke-width="2"/>
+  <text x="535" y="325" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="20" font-weight="700" fill="#20334e">Repositories</text>
+  <text x="535" y="352" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="14" fill="#526a89">Consultas y escrituras</text>
+
+  <rect x="650" y="275" rx="16" ry="16" width="180" height="105" fill="#eef4ff" stroke="#7aa2ff" stroke-width="2"/>
+  <text x="740" y="325" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="20" font-weight="700" fill="#20334e">DbContext</text>
+  <text x="740" y="352" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="14" fill="#526a89">EF Core y migraciones</text>
+
+  <rect x="445" y="420" rx="16" ry="16" width="180" height="105" fill="#eef4ff" stroke="#7aa2ff" stroke-width="2"/>
+  <text x="535" y="470" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="20" font-weight="700" fill="#20334e">Identity</text>
+  <text x="535" y="497" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="14" fill="#526a89">Usuarios, roles y tokens</text>
+
+  <rect x="650" y="420" rx="16" ry="16" width="180" height="105" fill="#eef4ff" stroke="#7aa2ff" stroke-width="2"/>
+  <text x="740" y="470" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="20" font-weight="700" fill="#20334e">DataSeeder</text>
+  <text x="740" y="497" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="14" fill="#526a89">Usuarios y datos demo</text>
+
+  <rect x="970" y="300" rx="18" ry="18" width="230" height="120" fill="#ffffff" stroke="#60a5fa" stroke-width="3"/>
+  <text x="1085" y="350" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="24" font-weight="700" fill="#20334e">SQL Server</text>
+  <text x="1085" y="385" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="15" fill="#526a89">Productos, ventas, Identity,</text>
+  <text x="1085" y="408" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="15" fill="#526a89">auditor&#237;a y trazabilidad</text>
+
+  <line x1="320" y1="360" x2="380" y2="360" stroke="#2f6bff" stroke-width="3"/>
+  <polygon points="380,360 365,352 365,368" fill="#2f6bff"/>
+  <line x1="625" y1="327" x2="650" y2="327" stroke="#2f6bff" stroke-width="3"/>
+  <line x1="625" y1="472" x2="650" y2="472" stroke="#2f6bff" stroke-width="3"/>
+  <line x1="830" y1="360" x2="970" y2="360" stroke="#2f6bff" stroke-width="3"/>
+  <polygon points="970,360 955,352 955,368" fill="#2f6bff"/>
+</svg>

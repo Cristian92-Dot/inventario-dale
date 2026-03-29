@@ -1,0 +1,67 @@
+@page "{id}"
+@model Inventario.Web.Pages.Users.EditModel
+@{
+    ViewData["Title"] = "Editar usuario";
+}
+
+<section class="page-title-block">
+    <div>
+        <span class="eyebrow">Administración</span>
+        <h2 class="h3 mb-2">Editar usuario</h2>
+        <p class="page-subtitle mb-0">Actualiza la información principal del usuario y administra su foto de perfil.</p>
+    </div>
+</section>
+
+<section class="section-card">
+    <form method="post" enctype="multipart/form-data" class="row g-3">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="col-md-6">
+            <label asp-for="Input.UserName" class="form-label">Usuario</label>
+            <input asp-for="Input.UserName" class="form-control" />
+            <span asp-validation-for="Input.UserName" class="text-danger"></span>
+        </div>
+        <div class="col-md-6">
+            <label asp-for="Input.DisplayName" class="form-label">Nombre visible</label>
+            <input asp-for="Input.DisplayName" class="form-control" />
+            <span asp-validation-for="Input.DisplayName" class="text-danger"></span>
+        </div>
+        <div class="col-md-6">
+            <label asp-for="Input.Email" class="form-label">Correo</label>
+            <input asp-for="Input.Email" class="form-control" />
+            <span asp-validation-for="Input.Email" class="text-danger"></span>
+        </div>
+        <div class="col-md-6">
+            <label asp-for="AvatarFile" class="form-label">Nueva foto de perfil</label>
+            <input asp-for="AvatarFile" class="form-control" accept=".jpg,.jpeg,.png,.webp" />
+            <div class="form-text">Opcional. Si seleccionas una nueva imagen, reemplazará la actual.</div>
+            <span asp-validation-for="AvatarFile" class="text-danger"></span>
+        </div>
+        <div class="col-12">
+            <div class="user-avatar-panel">
+                @if (!string.IsNullOrWhiteSpace(Model.Input.AvatarPath))
+                {
+                    <img src="@Model.Input.AvatarPath" alt="Avatar de usuario" class="user-avatar-preview" />
+                }
+                else
+                {
+                    <div class="user-avatar-preview user-avatar-preview--placeholder">
+                        <i class="bi bi-person-circle"></i>
+                    </div>
+                }
+
+                <label class="form-check-label d-flex align-items-center gap-2 mb-0">
+                    <input asp-for="RemoveCurrentAvatar" class="form-check-input" />
+                    <span>Quitar foto actual</span>
+                </label>
+            </div>
+        </div>
+        <div class="col-12 d-flex gap-2">
+            <button type="submit" class="btn btn-primary">Guardar cambios</button>
+            <a class="btn btn-outline-secondary" asp-page="/Users/Index">Cancelar</a>
+        </div>
+    </form>
+</section>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

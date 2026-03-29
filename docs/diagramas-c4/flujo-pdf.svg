@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="840" viewBox="0 0 1440 840">
+  <rect width="1440" height="840" fill="#f4f8ff"/>
+  <text x="60" y="70" font-family="Segoe UI, Arial, sans-serif" font-size="30" font-weight="700" fill="#20334e">DaLE Inventario - Flujo de PDF</text>
+  <text x="60" y="105" font-family="Segoe UI, Arial, sans-serif" font-size="16" fill="#526a89">Secuencia principal para generar un documento PDF</text>
+
+  <g font-family="Segoe UI, Arial, sans-serif" fill="#20334e" font-weight="700" font-size="18">
+    <text x="120" y="160">Usuario administrador</text>
+    <text x="395" y="160">Web / API</text>
+    <text x="645" y="160">ReportService</text>
+    <text x="905" y="160">PDF Builder</text>
+    <text x="1165" y="160">Archivos est&#225;ticos</text>
+  </g>
+
+  <g stroke="#9db8e9" stroke-width="2" stroke-dasharray="8 8">
+    <line x1="170" y1="190" x2="170" y2="760"/>
+    <line x1="430" y1="190" x2="430" y2="760"/>
+    <line x1="690" y1="190" x2="690" y2="760"/>
+    <line x1="960" y1="190" x2="960" y2="760"/>
+    <line x1="1230" y1="190" x2="1230" y2="760"/>
+  </g>
+
+  <g font-family="Segoe UI, Arial, sans-serif" font-size="14" fill="#20334e">
+    <line x1="170" y1="230" x2="430" y2="230" stroke="#2f6bff" stroke-width="3"/>
+    <polygon points="430,230 415,222 415,238" fill="#2f6bff"/>
+    <text x="245" y="220">Solicita exportaci&#243;n PDF</text>
+
+    <line x1="430" y1="310" x2="690" y2="310" stroke="#2f6bff" stroke-width="3"/>
+    <polygon points="690,310 675,302 675,318" fill="#2f6bff"/>
+    <text x="500" y="300">Obtiene datos del reporte</text>
+
+    <line x1="690" y1="390" x2="430" y2="390" stroke="#34a853" stroke-width="3"/>
+    <polygon points="430,390 445,382 445,398" fill="#34a853"/>
+    <text x="520" y="380">Datos listos</text>
+
+    <line x1="430" y1="470" x2="960" y2="470" stroke="#2f6bff" stroke-width="3"/>
+    <polygon points="960,470 945,462 945,478" fill="#2f6bff"/>
+    <text x="640" y="460">Construye documento</text>
+
+    <line x1="960" y1="550" x2="1230" y2="550" stroke="#2f6bff" stroke-width="3"/>
+    <polygon points="1230,550 1215,542 1215,558" fill="#2f6bff"/>
+    <text x="1025" y="540">Busca logo e im&#225;genes optimizadas</text>
+
+    <line x1="1230" y1="630" x2="960" y2="630" stroke="#34a853" stroke-width="3"/>
+    <polygon points="960,630 975,622 975,638" fill="#34a853"/>
+    <text x="1060" y="620">Devuelve archivos</text>
+
+    <line x1="960" y1="710" x2="430" y2="710" stroke="#34a853" stroke-width="3"/>
+    <polygon points="430,710 445,702 445,718" fill="#34a853"/>
+    <text x="655" y="700">PDF generado y listo para descarga</text>
+  </g>
+
+  <rect x="900" y="435" rx="12" ry="12" width="120" height="70" fill="#eef4ff" stroke="#7aa2ff" stroke-width="2"/>
+  <text x="960" y="468" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="14" fill="#20334e">Branding</text>
+  <text x="960" y="490" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="14" fill="#20334e">y layout</text>
+</svg>

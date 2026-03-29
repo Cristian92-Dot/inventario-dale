@@ -1,0 +1,82 @@
+@page
+@model Inventario.Web.Pages.Products.CreateModel
+@{
+    ViewData["Title"] = "Nuevo producto";
+}
+
+<section class="page-title-block">
+    <div>
+        <span class="eyebrow">Catálogo</span>
+        <h2 class="h3 mb-2">Registrar producto</h2>
+        <p class="page-subtitle mb-0">Incorpora un nuevo producto al catálogo operativo definiendo precio, stock inicial y umbral mínimo de reposición.</p>
+    </div>
+</section>
+
+<section class="section-card">
+    <form method="post" enctype="multipart/form-data" class="row g-3">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="col-12">
+            <label asp-for="Input.Name" class="form-label">Nombre</label>
+            <input asp-for="Input.Name" class="form-control" placeholder="Ej. Monitor 27 IPS" />
+            <span asp-validation-for="Input.Name" class="text-danger"></span>
+        </div>
+        <div class="col-md-6">
+            <label asp-for="Input.Category" class="form-label">Categoría</label>
+            <select asp-for="Input.Category" asp-items="Model.CategoryOptions" class="form-select">
+                <option value="">Selecciona una categoría</option>
+            </select>
+            <div class="form-text">Gestiona el catálogo maestro desde <a asp-page="/Categories/Index">Categorías</a>.</div>
+            <span asp-validation-for="Input.Category" class="text-danger"></span>
+        </div>
+        <div class="col-md-6">
+            <label asp-for="Input.Brand" class="form-label">Marca</label>
+            <input asp-for="Input.Brand" class="form-control" placeholder="Ej. Logitech" />
+            <span asp-validation-for="Input.Brand" class="text-danger"></span>
+        </div>
+        <div class="col-12">
+            <label asp-for="Input.ShortDescription" class="form-label">Descripción corta</label>
+            <textarea asp-for="Input.ShortDescription" class="form-control" rows="2" placeholder="Texto breve para tarjetas y listados"></textarea>
+            <span asp-validation-for="Input.ShortDescription" class="text-danger"></span>
+        </div>
+        <div class="col-12">
+            <label asp-for="Input.Description" class="form-label">Descripción larga</label>
+            <textarea asp-for="Input.Description" class="form-control" rows="5" placeholder="Describe beneficios, uso y contexto del producto"></textarea>
+            <span asp-validation-for="Input.Description" class="text-danger"></span>
+        </div>
+        <div class="col-12">
+            <label asp-for="ImageFile" class="form-label">Imagen del producto</label>
+            <input asp-for="ImageFile" class="form-control" accept=".jpg,.jpeg,.png,.webp" />
+            <div class="form-text">Formatos permitidos: JPG, PNG o WEBP. Tamaño máximo: 2 MB.</div>
+            <span asp-validation-for="ImageFile" class="text-danger"></span>
+        </div>
+        <div class="col-12">
+            <label asp-for="GalleryFiles" class="form-label">Galería del producto</label>
+            <input asp-for="GalleryFiles" class="form-control" accept=".jpg,.jpeg,.png,.webp" multiple />
+            <div class="form-text">Puedes subir varias imágenes secundarias para el detalle estilo catálogo.</div>
+            <span asp-validation-for="GalleryFiles" class="text-danger"></span>
+        </div>
+        <div class="col-md-4">
+            <label asp-for="Input.Price" class="form-label">Precio</label>
+            <input asp-for="Input.Price" class="form-control" />
+            <span asp-validation-for="Input.Price" class="text-danger"></span>
+        </div>
+        <div class="col-md-4">
+            <label asp-for="Input.Stock" class="form-label">Stock actual</label>
+            <input asp-for="Input.Stock" class="form-control" />
+            <span asp-validation-for="Input.Stock" class="text-danger"></span>
+        </div>
+        <div class="col-md-4">
+            <label asp-for="Input.MinStock" class="form-label">Stock mínimo</label>
+            <input asp-for="Input.MinStock" class="form-control" />
+            <span asp-validation-for="Input.MinStock" class="text-danger"></span>
+        </div>
+        <div class="col-12 d-flex gap-2">
+            <button type="submit" class="btn btn-primary">Guardar producto</button>
+            <a class="btn btn-outline-secondary" asp-page="/Products/Index">Cancelar</a>
+        </div>
+    </form>
+</section>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

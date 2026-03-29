@@ -1,0 +1,235 @@
+@page
+@model Inventario.Web.Pages.Sales.CreateModel
+@using System.Text.Json
+@{
+    ViewData["Title"] = "Registrar venta";
+}
+
+<section class="page-title-block">
+    <div>
+        <span class="eyebrow">Operación comercial</span>
+        <h2 class="h3 mb-2">Registrar venta</h2>
+        <p class="page-subtitle mb-0">Selecciona productos, valida existencias y confirma una venta con cálculo automático de subtotales y total general.</p>
+    </div>
+    <div class="pill-indicator">Stock bajo actual: @Model.ProductCatalog.Count(x => x.Stock <= 0)</div>
+</section>
+
+<section class="sale-grid">
+    <div class="section-card">
+        <div class="toolbar">
+            <div>
+                <span class="eyebrow">Detalle</span>
+                <h3 class="h5 mb-0">Líneas de venta</h3>
+            </div>
+            <button type="button" class="btn btn-outline-secondary" id="add-row">Agregar producto</button>
+        </div>
+
+        <form method="post" id="sale-form">
+            <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+            <div id="sale-items" class="d-grid gap-3">
+            @for (var i = 0; i < Model.Input.Items.Count; i++)
+            {
+                <div class="sale-line sale-item-row" data-index="@i">
+                    <div class="row g-3 align-items-end">
+                        <div class="col-lg-6">
+                            <label class="form-label">Producto</label>
+                            <select asp-for="Input.Items[i].ProductId" class="form-select product-select" asp-items="Model.ProductOptions"></select>
+                        </div>
+                        <div class="col-lg-2">
+                            <label class="form-label">Cantidad</label>
+                            <input asp-for="Input.Items[i].Quantity" class="form-control quantity-input" min="1" />
+                        </div>
+                        <div class="col-lg-2">
+                            <label class="form-label">Disponible</label>
+                            <input class="form-control stock-display" value="-" disabled />
+                        </div>
+                        <div class="col-lg-2 d-flex justify-content-end">
+                            <button type="button" class="btn btn-outline-danger remove-row w-100">Quitar</button>
+                        </div>
+                    </div>
+
+                    <div class="row g-3 mt-1">
+                        <div class="col-lg-6">
+                            <small class="muted-copy product-price">Precio unitario: -</small>
+                        </div>
+                        <div class="col-lg-6 text-lg-end">
+                            <small class="muted-copy line-subtotal">Subtotal: L 0.00</small>
+                        </div>
+                    </div>
+                </div>
+            }
+            </div>
+        </form>
+    </div>
+
+    <aside class="section-card summary-panel">
+        <span class="eyebrow">Resumen</span>
+        <h3 class="h5 mt-2">Venta en preparación</h3>
+        <p class="muted-copy">El sistema calcula el total final y valida existencias antes de confirmar.</p>
+
+        <div class="mt-4 d-grid gap-3">
+            <div>
+                <span class="muted-copy">Productos seleccionados</span>
+                <div class="summary-total" id="summary-lines">0</div>
+            </div>
+            <div>
+                <span class="muted-copy">Total estimado</span>
+                <div class="summary-total" id="summary-total">L 0.00</div>
+            </div>
+        </div>
+
+        <div class="d-grid gap-2 mt-4">
+            <button type="submit" form="sale-form" class="btn btn-primary">Confirmar venta</button>
+            <a class="btn btn-outline-secondary" asp-page="/Dashboard/Index">Volver al panel</a>
+        </div>
+    </aside>
+</section>
+
+<template id="sale-item-template">
+    <div class="sale-line sale-item-row" data-index="__index__">
+        <div class="row g-3 align-items-end">
+            <div class="col-lg-6">
+                <label class="form-label">Producto</label>
+                <select name="Input.Items[__index__].ProductId" class="form-select product-select">
+                    @foreach (var option in Model.ProductOptions)
+                    {
+                        <option value="@option.Value" disabled="@option.Disabled">@option.Text</option>
+                    }
+                </select>
+            </div>
+            <div class="col-lg-2">
+                <label class="form-label">Cantidad</label>
+                <input name="Input.Items[__index__].Quantity" class="form-control quantity-input" value="1" type="number" min="1" />
+            </div>
+            <div class="col-lg-2">
+                <label class="form-label">Disponible</label>
+                <input class="form-control stock-display" value="-" disabled />
+            </div>
+            <div class="col-lg-2 d-flex justify-content-end">
+                <button type="button" class="btn btn-outline-danger remove-row w-100">Quitar</button>
+            </div>
+        </div>
+        <div class="row g-3 mt-1">
+            <div class="col-lg-6">
+                <small class="muted-copy product-price">Precio unitario: -</small>
+            </div>
+            <div class="col-lg-6 text-lg-end">
+                <small class="muted-copy line-subtotal">Subtotal: L 0.00</small>
+            </div>
+        </div>
+    </div>
+</template>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        (() => {
+            const products = @Html.Raw(JsonSerializer.Serialize(Model.ProductCatalog, new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase }));
+            const productMap = Object.fromEntries(products.map(p => [p.id, p]));
+            const container = document.getElementById('sale-items');
+            const template = document.getElementById('sale-item-template');
+            const addButton = document.getElementById('add-row');
+            const summaryLines = document.getElementById('summary-lines');
+            const summaryTotal = document.getElementById('summary-total');
+            const form = document.getElementById('sale-form');
+
+            const formatMoney = value => new Intl.NumberFormat('es-HN', { style: 'currency', currency: 'HNL' }).format(value);
+
+            const updateLine = (row) => {
+                const select = row.querySelector('.product-select');
+                const quantityInput = row.querySelector('.quantity-input');
+                const stockDisplay = row.querySelector('.stock-display');
+                const priceLabel = row.querySelector('.product-price');
+                const subtotalLabel = row.querySelector('.line-subtotal');
+                const product = productMap[select.value];
+                const quantity = Number(quantityInput.value || 0);
+
+                if (!product) {
+                    stockDisplay.value = '-';
+                    priceLabel.textContent = 'Precio unitario: -';
+                    subtotalLabel.textContent = 'Subtotal: L 0.00';
+                    return;
+                }
+
+                stockDisplay.value = product.stock;
+                priceLabel.textContent = `Precio unitario: ${formatMoney(product.price)}`;
+                subtotalLabel.textContent = `Subtotal: ${formatMoney(product.price * quantity)}`;
+            };
+
+            const updateSummary = () => {
+                const rows = [...container.querySelectorAll('.sale-item-row')];
+                let total = 0;
+
+                rows.forEach(row => {
+                    const select = row.querySelector('.product-select');
+                    const quantityInput = row.querySelector('.quantity-input');
+                    const product = productMap[select.value];
+                    const quantity = Number(quantityInput.value || 0);
+                    if (product) {
+                        total += product.price * quantity;
+                    }
+                });
+
+                summaryLines.textContent = rows.length.toString();
+                summaryTotal.textContent = formatMoney(total);
+            };
+
+            const wireRow = (row) => {
+                row.querySelector('.product-select')?.addEventListener('change', () => {
+                    updateLine(row);
+                    updateSummary();
+                });
+
+                row.querySelector('.quantity-input')?.addEventListener('input', () => {
+                    updateLine(row);
+                    updateSummary();
+                });
+
+                row.querySelector('.remove-row')?.addEventListener('click', () => {
+                    if (container.querySelectorAll('.sale-item-row').length > 1) {
+                        row.remove();
+                        updateSummary();
+                    }
+                });
+
+                updateLine(row);
+            };
+
+            addButton.addEventListener('click', () => {
+                const index = container.querySelectorAll('.sale-item-row').length;
+                container.insertAdjacentHTML('beforeend', template.innerHTML.replaceAll('__index__', index));
+                const row = container.lastElementChild;
+                wireRow(row);
+                updateSummary();
+            });
+
+            [...container.querySelectorAll('.sale-item-row')].forEach(wireRow);
+            updateSummary();
+
+            form.addEventListener('submit', event => {
+                const rows = [...container.querySelectorAll('.sale-item-row')];
+                const invalidRow = rows.find(row => {
+                    const select = row.querySelector('.product-select');
+                    const quantityInput = row.querySelector('.quantity-input');
+                    const product = productMap[select.value];
+                    const quantity = Number(quantityInput.value || 0);
+                    return product && quantity > product.stock;
+                });
+
+                if (invalidRow) {
+                    event.preventDefault();
+                    if (window.Swal) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Stock insuficiente',
+                            text: 'La cantidad solicitada supera el inventario disponible para uno de los productos seleccionados.',
+                            confirmButtonColor: '#2563eb',
+                            background: '#0f172a',
+                            color: '#f8fafc'
+                        });
+                    }
+                }
+            });
+        })();
+    </script>
+}

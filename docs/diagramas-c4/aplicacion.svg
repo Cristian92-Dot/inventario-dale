@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="760" viewBox="0 0 1280 760">
+  <rect width="1280" height="760" fill="#f4f8ff"/>
+  <text x="60" y="70" font-family="Segoe UI, Arial, sans-serif" font-size="30" font-weight="700" fill="#20334e">DaLE Inventario - Aplicaci&#243;n</text>
+  <text x="60" y="105" font-family="Segoe UI, Arial, sans-serif" font-size="16" fill="#526a89">Servicios, validaciones y contratos de la capa de aplicaci&#243;n</text>
+
+  <rect x="90" y="300" rx="18" ry="18" width="230" height="120" fill="#ffffff" stroke="#7aa2ff" stroke-width="3"/>
+  <text x="205" y="350" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="24" font-weight="700" fill="#20334e">Web y API</text>
+  <text x="205" y="385" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="15" fill="#526a89">Entradas desde Razor Pages</text>
+  <text x="205" y="408" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="15" fill="#526a89">y controladores REST</text>
+
+  <rect x="390" y="140" rx="24" ry="24" width="500" height="460" fill="#ffffff" stroke="#2f6bff" stroke-width="4"/>
+  <text x="640" y="200" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="28" font-weight="700" fill="#20334e">Inventario.Application</text>
+  <text x="640" y="235" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="16" fill="#526a89">Coordinaci&#243;n de reglas, validaciones y contratos</text>
+
+  <rect x="455" y="280" rx="16" ry="16" width="170" height="105" fill="#eef4ff" stroke="#7aa2ff" stroke-width="2"/>
+  <text x="540" y="330" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="21" font-weight="700" fill="#20334e">Services</text>
+  <text x="540" y="357" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="14" fill="#526a89">Orquestan la l&#243;gica</text>
+
+  <rect x="650" y="280" rx="16" ry="16" width="170" height="105" fill="#eef4ff" stroke="#7aa2ff" stroke-width="2"/>
+  <text x="735" y="330" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="21" font-weight="700" fill="#20334e">Validators</text>
+  <text x="735" y="357" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="14" fill="#526a89">FluentValidation</text>
+
+  <rect x="455" y="425" rx="16" ry="16" width="170" height="105" fill="#eef4ff" stroke="#7aa2ff" stroke-width="2"/>
+  <text x="540" y="475" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="21" font-weight="700" fill="#20334e">DTOs</text>
+  <text x="540" y="502" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="14" fill="#526a89">Entradas y salidas</text>
+
+  <rect x="650" y="425" rx="16" ry="16" width="170" height="105" fill="#eef4ff" stroke="#7aa2ff" stroke-width="2"/>
+  <text x="735" y="468" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="19" font-weight="700" fill="#20334e">Interfaces</text>
+  <text x="735" y="494" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="14" fill="#526a89">Repositorios y servicios</text>
+
+  <rect x="960" y="300" rx="18" ry="18" width="230" height="120" fill="#ffffff" stroke="#60a5fa" stroke-width="3"/>
+  <text x="1075" y="350" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="24" font-weight="700" fill="#20334e">Infrastructure</text>
+  <text x="1075" y="385" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="15" fill="#526a89">Implementa repositorios</text>
+  <text x="1075" y="408" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="15" fill="#526a89">y persistencia</text>
+
+  <line x1="320" y1="360" x2="390" y2="360" stroke="#2f6bff" stroke-width="3"/>
+  <polygon points="390,360 375,352 375,368" fill="#2f6bff"/>
+  <line x1="625" y1="330" x2="650" y2="330" stroke="#2f6bff" stroke-width="3"/>
+  <line x1="625" y1="475" x2="650" y2="475" stroke="#2f6bff" stroke-width="3"/>
+  <line x1="820" y1="360" x2="960" y2="360" stroke="#2f6bff" stroke-width="3"/>
+  <polygon points="960,360 945,352 945,368" fill="#2f6bff"/>
+</svg>

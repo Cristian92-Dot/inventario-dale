@@ -1,0 +1,21 @@
+@page
+@model ErrorModel
+@{
+    ViewData["Title"] = "Error del sistema";
+}
+
+<section class="section-card text-center py-5">
+    <span class="eyebrow">Incidencia</span>
+    <h2 class="display-6 mt-3">Se produjo un error al procesar la solicitud</h2>
+    <p class="page-subtitle mx-auto mt-3">El sistema registró la incidencia para facilitar el diagnóstico. Puedes intentar nuevamente o volver al panel principal.</p>
+
+    @if (Model.ShowRequestId)
+    {
+        <p class="muted-copy mt-4 mb-0">Identificador de solicitud: <code>@Model.RequestId</code></p>
+    }
+
+    <div class="d-flex justify-content-center gap-2 mt-4">
+        <a class="btn btn-primary" asp-page="/Dashboard/Index">Volver al panel</a>
+        <a class="btn btn-outline-secondary" asp-page="/Account/Login">Ir al acceso</a>
+    </div>
+</section>

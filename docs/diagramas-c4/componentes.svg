@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1360" height="860" viewBox="0 0 1360 860">
+  <rect width="1360" height="860" fill="#f4f8ff"/>
+  <text x="60" y="70" font-family="Segoe UI, Arial, sans-serif" font-size="30" font-weight="700" fill="#20334e">DaLE Inventario - C4 Nivel 3</text>
+  <text x="60" y="105" font-family="Segoe UI, Arial, sans-serif" font-size="16" fill="#526a89">Componentes principales y relaci&#243;n entre capas</text>
+
+  <rect x="80" y="150" rx="22" ry="22" width="320" height="560" fill="#ffffff" stroke="#7aa2ff" stroke-width="3"/>
+  <text x="240" y="200" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="25" font-weight="700" fill="#20334e">Inventario.Web</text>
+  <rect x="120" y="250" rx="14" ry="14" width="240" height="90" fill="#eef4ff" stroke="#7aa2ff" stroke-width="2"/>
+  <text x="240" y="300" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="22" font-weight="700" fill="#20334e">Razor Pages</text>
+  <rect x="120" y="370" rx="14" ry="14" width="240" height="90" fill="#eef4ff" stroke="#7aa2ff" stroke-width="2"/>
+  <text x="240" y="420" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="22" font-weight="700" fill="#20334e">Controllers API</text>
+  <rect x="120" y="490" rx="14" ry="14" width="240" height="90" fill="#eef4ff" stroke="#7aa2ff" stroke-width="2"/>
+  <text x="240" y="532" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="20" font-weight="700" fill="#20334e">Middleware</text>
+  <text x="240" y="558" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="14" fill="#526a89">Errores, seguridad y trazabilidad</text>
+
+  <rect x="510" y="120" rx="22" ry="22" width="340" height="620" fill="#ffffff" stroke="#2f6bff" stroke-width="4"/>
+  <text x="680" y="170" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="25" font-weight="700" fill="#20334e">Inventario.Application</text>
+  <rect x="560" y="230" rx="14" ry="14" width="240" height="90" fill="#eef4ff" stroke="#2f6bff" stroke-width="2"/>
+  <text x="680" y="282" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="21" font-weight="700" fill="#20334e">Services</text>
+  <rect x="560" y="355" rx="14" ry="14" width="240" height="90" fill="#eef4ff" stroke="#2f6bff" stroke-width="2"/>
+  <text x="680" y="407" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="21" font-weight="700" fill="#20334e">Validators</text>
+  <rect x="560" y="480" rx="14" ry="14" width="240" height="90" fill="#eef4ff" stroke="#2f6bff" stroke-width="2"/>
+  <text x="680" y="532" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="21" font-weight="700" fill="#20334e">DTOs y Contracts</text>
+
+  <rect x="960" y="150" rx="22" ry="22" width="320" height="560" fill="#ffffff" stroke="#60a5fa" stroke-width="3"/>
+  <text x="1120" y="200" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="25" font-weight="700" fill="#20334e">Inventario.Infrastructure</text>
+  <rect x="1000" y="250" rx="14" ry="14" width="240" height="90" fill="#eef4ff" stroke="#60a5fa" stroke-width="2"/>
+  <text x="1120" y="300" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="21" font-weight="700" fill="#20334e">Repositories</text>
+  <rect x="1000" y="370" rx="14" ry="14" width="240" height="90" fill="#eef4ff" stroke="#60a5fa" stroke-width="2"/>
+  <text x="1120" y="420" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="21" font-weight="700" fill="#20334e">EF Core / DbContext</text>
+  <rect x="1000" y="490" rx="14" ry="14" width="240" height="90" fill="#eef4ff" stroke="#60a5fa" stroke-width="2"/>
+  <text x="1120" y="532" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="21" font-weight="700" fill="#20334e">Identity + Seed</text>
+
+  <rect x="1045" y="750" rx="18" ry="18" width="150" height="70" fill="#ffffff" stroke="#60a5fa" stroke-width="3"/>
+  <text x="1120" y="793" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="22" font-weight="700" fill="#20334e">SQL Server</text>
+
+  <line x1="400" y1="300" x2="510" y2="275" stroke="#2f6bff" stroke-width="3"/>
+  <polygon points="510,275 497,269 500,284" fill="#2f6bff"/>
+  <line x1="400" y1="420" x2="510" y2="400" stroke="#2f6bff" stroke-width="3"/>
+  <polygon points="510,400 497,394 500,409" fill="#2f6bff"/>
+  <line x1="400" y1="535" x2="510" y2="525" stroke="#2f6bff" stroke-width="3"/>
+  <polygon points="510,525 496,518 497,533" fill="#2f6bff"/>
+
+  <line x1="850" y1="275" x2="960" y2="295" stroke="#2f6bff" stroke-width="3"/>
+  <polygon points="960,295 946,287 944,302" fill="#2f6bff"/>
+  <line x1="850" y1="400" x2="960" y2="415" stroke="#2f6bff" stroke-width="3"/>
+  <polygon points="960,415 946,407 944,422" fill="#2f6bff"/>
+  <line x1="1120" y1="580" x2="1120" y2="750" stroke="#2f6bff" stroke-width="3"/>
+  <polygon points="1120,750 1112,735 1128,735" fill="#2f6bff"/>
+</svg>

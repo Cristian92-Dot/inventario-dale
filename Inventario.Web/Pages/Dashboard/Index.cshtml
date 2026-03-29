@@ -1,0 +1,208 @@
+@page
+@model Inventario.Web.Pages.Dashboard.IndexModel
+@using System.Text.Json
+@{
+    ViewData["Title"] = "Panel principal";
+}
+
+<section class="page-title-block">
+    <div>
+        <span class="eyebrow">Resumen operativo</span>
+        <h2 class="h3 mb-2">Panel principal</h2>
+        <p class="page-subtitle mb-0">Monitorea el desempeño diario, detecta stock crítico y ejecuta acciones de inventario y ventas desde un solo lugar.</p>
+    </div>
+    <div class="toolbar-actions">
+        <a class="btn btn-primary" asp-page="/Sales/Create"><i class="bi bi-cart3"></i> Registrar venta</a>
+        @if (User.IsInRole("ADMIN"))
+        {
+            <a class="btn btn-outline-secondary" asp-page-handler="ExportProducts"><i class="bi bi-box-seam"></i> Catálogo CSV</a>
+            <a class="btn btn-outline-secondary" asp-page-handler="ExportLowStock"><i class="bi bi-exclamation-triangle"></i> Stock bajo CSV</a>
+            <a class="btn btn-outline-secondary" asp-page="/Reports/PurchaseRequest"><i class="bi bi-file-earmark-pdf"></i> Solicitud de compras</a>
+            <a class="btn btn-outline-secondary" asp-page-handler="ExportMonthlySalesPdf"><i class="bi bi-bar-chart-line"></i> Ventas mensuales PDF</a>
+        }
+    </div>
+</section>
+
+@if (Model.Metrics.LowStockProducts > 0)
+{
+    <div class="metric-card mb-4 border border-warning-subtle">
+        <div class="d-flex justify-content-between align-items-center gap-3 flex-wrap">
+            <div>
+                <span class="eyebrow">Alerta operativa</span>
+                <h3 class="h5 mt-2 mb-2">Se detectaron @Model.Metrics.LowStockProducts productos con nivel de stock crítico.</h3>
+                <p class="muted-copy mb-0">Revisa el reporte de abastecimiento para evitar quiebres de inventario.</p>
+            </div>
+            <a class="btn btn-outline-secondary" asp-page="/Reports/LowStock">Ir al reporte</a>
+        </div>
+    </div>
+}
+
+<section class="stats-grid mb-4">
+    <article class="metric-card">
+        <span class="d-inline-flex align-items-center justify-content-center rounded-circle mb-3" style="width:46px;height:46px;background:rgba(47,107,255,.08);color:#2f6bff;"><i class="bi bi-box-seam fs-5"></i></span>
+        <span class="metric-label">Productos activos</span>
+        <div class="metric-value">@Model.Metrics.TotalProducts</div>
+        <span class="metric-trend">Catálogo vigente para operación comercial.</span>
+    </article>
+    <article class="metric-card">
+        <span class="d-inline-flex align-items-center justify-content-center rounded-circle mb-3" style="width:46px;height:46px;background:rgba(86,182,255,.12);color:#2f6bff;"><i class="bi bi-receipt fs-5"></i></span>
+        <span class="metric-label">Ventas registradas</span>
+        <div class="metric-value">@Model.Metrics.TotalSales</div>
+        <span class="metric-trend">Operaciones registradas desde la puesta en marcha.</span>
+    </article>
+    <article class="metric-card">
+        <span class="d-inline-flex align-items-center justify-content-center rounded-circle mb-3" style="width:46px;height:46px;background:rgba(245,158,11,.12);color:#f59e0b;"><i class="bi bi-exclamation-triangle fs-5"></i></span>
+        <span class="metric-label">Productos críticos</span>
+        <div class="metric-value">@Model.Metrics.LowStockProducts</div>
+        <span class="metric-trend">Requieren seguimiento y reposición inmediata.</span>
+    </article>
+    <article class="metric-card">
+        <span class="d-inline-flex align-items-center justify-content-center rounded-circle mb-3" style="width:46px;height:46px;background:rgba(22,163,74,.12);color:#16a34a;"><i class="bi bi-currency-dollar fs-5"></i></span>
+        <span class="metric-label">Vendido hoy</span>
+        <div class="metric-value">@Model.Metrics.TotalSoldToday.ToString("C")</div>
+        <span class="metric-trend">Acumulado diario calculado por el servidor.</span>
+    </article>
+</section>
+
+<section class="dashboard-grid mb-4">
+    <div class="col-span-7 chart-card section-card">
+        <div class="toolbar">
+            <div>
+                <span class="eyebrow">Tendencia</span>
+                <h3 class="h5 mb-0">Ventas de los últimos 7 días</h3>
+            </div>
+        </div>
+        <canvas id="ventasChart"></canvas>
+    </div>
+
+    <div class="col-span-5 chart-card section-card">
+        <div class="toolbar">
+            <div>
+                <span class="eyebrow">Inventario</span>
+                <h3 class="h5 mb-0">Estado del inventario</h3>
+            </div>
+        </div>
+        <canvas id="inventarioChart"></canvas>
+    </div>
+</section>
+
+<section class="dashboard-grid">
+    <div class="col-span-8 section-card">
+        <div class="toolbar">
+            <div>
+                <span class="eyebrow">Seguimiento</span>
+                <h3 class="h5 mb-0">Productos con prioridad de reposición</h3>
+            </div>
+            <a class="btn btn-outline-secondary" asp-page="/Reports/LowStock">Ver reporte completo</a>
+        </div>
+
+        @if (Model.LowStockProducts.Any())
+        {
+            <div class="table-responsive">
+                <table class="table align-middle">
+                    <thead>
+                        <tr>
+                            <th>Producto</th>
+                            <th>Stock actual</th>
+                            <th>Stock mínimo</th>
+                            <th>Estado</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    @foreach (var item in Model.LowStockProducts)
+                    {
+                        <tr>
+                            <td>@item.Name</td>
+                            <td>@item.Stock</td>
+                            <td>@item.MinStock</td>
+                            <td><span class="badge badge-warning-soft">Requiere reposición</span></td>
+                        </tr>
+                    }
+                    </tbody>
+                </table>
+            </div>
+        }
+        else
+        {
+            <div class="empty-state">No hay productos en nivel crítico. El inventario se encuentra estable.</div>
+        }
+    </div>
+
+    <div class="col-span-4 section-card">
+        <span class="eyebrow">Acciones rápidas</span>
+        <h3 class="h5 mt-2">Ejecuta tareas frecuentes</h3>
+        <div class="d-grid gap-2 mt-3">
+            <a class="btn btn-primary" asp-page="/Sales/Create"><i class="bi bi-cart3"></i> Registrar una venta</a>
+            <a class="btn btn-outline-secondary" asp-page="/Products/Index"><i class="bi bi-box-seam"></i> Consultar catálogo</a>
+            @if (User.IsInRole("ADMIN"))
+            {
+                <a class="btn btn-outline-secondary" asp-page="/Products/Create"><i class="bi bi-bag-plus"></i> Crear producto</a>
+                <a class="btn btn-outline-secondary" asp-page="/Users/Index"><i class="bi bi-people"></i> Gestionar usuarios</a>
+            }
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+    <script>
+        (() => {
+            const ventas = @Html.Raw(JsonSerializer.Serialize(Model.Insights.VentasUltimosSieteDias, new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase }));
+            const inventario = @Html.Raw(JsonSerializer.Serialize(Model.Insights.EstadoInventario, new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase }));
+
+            if (window.Chart) {
+                new Chart(document.getElementById('ventasChart'), {
+                    type: 'bar',
+                    data: {
+                        labels: ventas.map(x => x.label),
+                        datasets: [{
+                            label: 'Total vendido',
+                            data: ventas.map(x => x.value),
+                            backgroundColor: '#3b82f6',
+                            borderRadius: 12
+                        }]
+                    },
+                    options: {
+                        plugins: { legend: { display: false } },
+                        scales: {
+                            x: { ticks: { color: '#94a3b8' }, grid: { color: 'rgba(148,163,184,0.08)' } },
+                            y: { ticks: { color: '#94a3b8' }, grid: { color: 'rgba(148,163,184,0.08)' } }
+                        }
+                    }
+                });
+
+                new Chart(document.getElementById('inventarioChart'), {
+                    type: 'doughnut',
+                    data: {
+                        labels: inventario.map(x => x.label),
+                        datasets: [{
+                            data: inventario.map(x => x.value),
+                            backgroundColor: ['#2563eb', '#f59e0b', '#ef4444']
+                        }]
+                    },
+                    options: {
+                        plugins: {
+                            legend: {
+                                labels: { color: '#cbd5e1' }
+                            }
+                        }
+                    }
+                });
+            }
+
+            @if (Model.Metrics.LowStockProducts > 0)
+            {
+                <text>
+                if (window.Swal) {
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'Atención de inventario',
+                        text: 'Hay productos con stock bajo que requieren reposición.',
+                        confirmButtonText: 'Revisar más tarde',
+                        confirmButtonColor: '#2563eb'
+                    });
+                }
+                </text>
+            }
+        })();
+    </script>
+}

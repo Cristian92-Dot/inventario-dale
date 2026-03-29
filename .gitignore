@@ -1,0 +1,47 @@
+# Build outputs
+bin/
+obj/
+artifacts/
+publish/
+
+# IDE and user-specific files
+.vs/
+.vscode/
+*.user
+*.rsuser
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Test and coverage outputs
+TestResults/
+coverage/
+coverage-results/
+*.coverage
+*.coveragexml
+
+# Logs and local runtime files
+logs/
+Inventario.Web/logs/
+*.log
+
+# Local environment overrides
+appsettings.Local.json
+appsettings.*.local.json
+.env
+.env.*
+
+# OS files
+Thumbs.db
+Desktop.ini
+
+# Temporary folders
+temp-build/
+tmp/
+temp/
+
+# Package manager caches
+node_modules/
+
+# Docker local data
+.docker/

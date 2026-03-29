@@ -1,0 +1,94 @@
+@page
+@model Inventario.Web.Pages.Users.IndexModel
+@{
+    ViewData["Title"] = "Usuarios";
+}
+
+<section class="page-title-block">
+    <div>
+        <span class="eyebrow">Administración</span>
+        <h2 class="h3 mb-2">Usuarios</h2>
+        <p class="page-subtitle mb-0">Administra accesos internos, roles operativos y estado de disponibilidad de las cuentas del sistema.</p>
+    </div>
+    <div class="toolbar-actions">
+        <a class="btn btn-primary" asp-page="/Users/Create">Registrar usuario</a>
+    </div>
+</section>
+
+<section class="section-card">
+    @if (Model.Users.Any())
+    {
+        <div class="table-responsive">
+            <table class="table align-middle">
+                <thead>
+                    <tr>
+                        <th>Usuario</th>
+                        <th>Correo</th>
+                        <th>Rol</th>
+                        <th>Estado</th>
+                        <th>Intentos fallidos</th>
+                        <th>Alta</th>
+                        <th class="text-end">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                @foreach (var user in Model.Users)
+                {
+                    <tr>
+                        <td>
+                            <div class="user-listing-cell">
+                                @if (!string.IsNullOrWhiteSpace(user.AvatarPath))
+                                {
+                                    <img src="@user.AvatarPath" alt="@user.DisplayName" class="user-avatar-xs" />
+                                }
+                                else
+                                {
+                                    <div class="user-avatar-xs user-avatar-xs--placeholder"><i class="bi bi-person-circle"></i></div>
+                                }
+                                <div>
+                                    <strong>@user.DisplayName</strong>
+                                    <div class="muted-copy">@user.UserName</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td>@user.Email</td>
+                        <td>
+                            <form method="post" asp-page-handler="ChangeRole" asp-route-id="@user.Id" class="d-flex gap-2 justify-content-end">
+                                <select name="Role" class="form-select form-select-sm">
+                                    <option value="ADMIN" selected="@(user.Role == "ADMIN")">ADMIN</option>
+                                    <option value="EMPLEADO" selected="@(user.Role == "EMPLEADO")">EMPLEADO</option>
+                                </select>
+                                <button type="submit" class="btn btn-sm btn-outline-secondary">Actualizar</button>
+                            </form>
+                        </td>
+                        <td>
+                            @if (user.IsActive)
+                            {
+                                <span class="badge badge-ok">Activo</span>
+                            }
+                            else
+                            {
+                                <span class="badge badge-critical">Inactivo</span>
+                            }
+                        </td>
+                        <td>@user.FailedLoginAttempts</td>
+                        <td>@user.CreatedAt.ToLocalTime().ToString("g")</td>
+                        <td class="text-end">
+                            <div class="d-inline-flex gap-2 flex-wrap justify-content-end">
+                                <a class="btn btn-sm btn-outline-primary" asp-page="/Users/Edit" asp-route-id="@user.Id">Editar</a>
+                                <form method="post" asp-page-handler="ToggleStatus" asp-route-id="@user.Id" class="d-inline">
+                                    <button type="submit" class="btn btn-sm btn-outline-danger" data-confirm-message="Se actualizará el estado operativo de esta cuenta." data-confirm-title="Actualizar estado de usuario">@(user.IsActive ? "Desactivar" : "Activar")</button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+        </div>
+    }
+    else
+    {
+        <div class="empty-state">No existen usuarios registrados para administrar.</div>
+    }
+</section>
