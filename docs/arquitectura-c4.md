@@ -4,7 +4,7 @@ Este documento describe la arquitectura del sistema usando el enfoque C4. La ide
 
 En esta solución, `DaLE` significa `Dashboard de Logística e Existencias`.
 
-## Diagramas visuales listos para entrega
+## Diagramas visuales agregados  para entrega y entendimiento del sistema
 
 - `diagramas-c4/contexto.svg`
 - `diagramas-c4/contenedores.svg`
