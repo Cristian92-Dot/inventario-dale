@@ -232,7 +232,7 @@ sequenceDiagram
 
 ## 7. Decisiones técnicas importantes
 
-## 🧱 Decisiones de Arquitectura
+##  Decisiones de Arquitectura
 
 | Decisión | Motivo |
 |----------|--------|
