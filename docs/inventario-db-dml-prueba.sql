@@ -3,7 +3,7 @@
 --   admin / Admin123*
 --   empleado / Empleado123*
 
-USE [InventarioDb2];
+USE [InventarioDb];
 
 
 
