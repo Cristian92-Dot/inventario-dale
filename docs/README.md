@@ -11,6 +11,8 @@ En esta carpeta  se encontraran toda la documentación relacionada con el proyec
 - `manual-de-usuario.md`
   - guía de uso del sistema pensada para usuarios finales
   - incluye login renovado, edición de usuarios con avatar y preparación de solicitud de compra antes del PDF
+- `base-de-datos-prueba.md`
+  - explica el DDL y DML entregados para crear y poblar la base de datos del proyecto
 - `creditos-imagenes-catalogo.md`
   - referencia breve de la fuente usada para las imágenes del catálogo demo
 
